@@ -8,8 +8,8 @@ class BookmarkManager < Sinatra::Base
     register Sinatra::Reloader
   end
 
-  get '/' do
-    'Bookmark Manager'
+  get ('/') do
+    "Bookmark Manager"
   end
 
   get '/bookmarks' do
