@@ -24,3 +24,8 @@ $> psql
 admin=# CREATE DATABASE "bookmark_manager_test";
 admin=# CREATE TABLE bookmarks(id SERIAL PRIMARY KEY, url VARCHAR(60));
 run the psql commands for both databases.
+
+As a user story 2
+-------------------------------------------
+So I can store bookmark data for later retrieval
+I want to add a bookmark to Bookmark Manager
