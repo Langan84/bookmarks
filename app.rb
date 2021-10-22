@@ -2,8 +2,10 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
 require './lib/bookmark'
+require_relative './lib/database_connection_setup'
 
 class BookmarkManager < Sinatra::Base
+  enable :sessions, :method_override
   configure :development do
     register Sinatra::Reloader
   end
@@ -26,8 +28,6 @@ class BookmarkManager < Sinatra::Base
     redirect '/bookmarks'
   end
 
-  enable :sessions, :method_override
-
   delete '/bookmarks/:id' do
     connection = PG.connect(dbname: 'bookmark_manager_test')
     connection.exec_params("DELETE FROM bookmarks WHERE id = $1", [params[:id]])
@@ -43,7 +43,7 @@ class BookmarkManager < Sinatra::Base
     Bookmark.update(id: params[:id], title: params[:title], url: params[:url])
     redirect('/bookmarks')
   end
-  
+
 
   run! if app_file == $0
 end
