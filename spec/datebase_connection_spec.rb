@@ -23,6 +23,6 @@ describe DatabaseConnection do
       # expect(connection).to receive(:exec_params).with("SELECT * FROM bookmarks;")
 
       DatabaseConnection.query("SELECT * FROM bookmarks;")
-    e
+    end
   end
 end

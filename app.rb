@@ -3,11 +3,16 @@ require 'sinatra/base'
 require 'sinatra/reloader'
 require './lib/bookmark'
 require_relative './lib/database_connection_setup'
+require 'uri'
+require 'sinatra/flash'
+
+
 
 class BookmarkManager < Sinatra::Base
   enable :sessions, :method_override
   configure :development do
-    register Sinatra::Reloader
+  register Sinatra::Reloader
+  register Sinatra::Flash
   end
 
   get ('/') do
@@ -24,14 +29,18 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/bookmarks' do
+    if params['url'] =~ /\A#{URI::regexp(['http', 'https'])}\z/
     Bookmark.create(url: params[:url], title: params[:title])
-    redirect '/bookmarks'
+    else
+    flash[:notice] = "You must submit a valid URL."
+    end
+    redirect('/bookmarks')
   end
 
   delete '/bookmarks/:id' do
     connection = PG.connect(dbname: 'bookmark_manager_test')
     connection.exec_params("DELETE FROM bookmarks WHERE id = $1", [params[:id]])
-    redirect '/bookmarks'
+    redirect('/bookmarks')
   end
 
   get '/bookmarks/:id/edit' do

@@ -12,7 +12,7 @@ describe Bookmark do
       Bookmark.create(url: "http://www.google.com", title: "Google")
 
       bookmarks = Bookmark.all
-      
+
       expect(bookmarks.length).to eq 3
       expect(bookmarks.first).to be_a Bookmark
       expect(bookmarks.first.id).to eq bookmark.id
@@ -32,8 +32,8 @@ describe Bookmark do
     end
   end
 
-  describe "Delete" do 
-    it 'deletes the given bookmark' do 
+  describe "Delete" do
+    it 'deletes the given bookmark' do
       bookmark = Bookmark.create(url: 'http://www.testbookmark.com', title: 'Test Bookmark')
 
       Bookmark.delete(id: bookmark.id)
@@ -46,7 +46,7 @@ describe Bookmark do
     it 'updates the bookmark with the given data' do
       bookmark = Bookmark.create(title: 'Makers Academy', url: 'http://www.makersacademy.com')
       updated_bookmark = Bookmark.update(id: bookmark.id, url: 'http://www.snakersacademy.com', title: 'Snakers Academy')
-  
+
       expect(updated_bookmark).to be_a Bookmark
       expect(updated_bookmark.id).to eq bookmark.id
       expect(updated_bookmark.title).to eq 'Snakers Academy'
@@ -65,7 +65,11 @@ describe Bookmark do
         expect(result.url).to eq 'http://www.makersacademy.com'
       end
     end
+
+    describe '.create' do
+      it 'does not create a new bookmark if the URL is not valid' do
+        Bookmark.create(url: 'not a real bookmark', title: 'not a real bookmark')
+        expect(Bookmark.all).to be_empty
+      end
+    end
 end
-
-
-
